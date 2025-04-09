@@ -1,5 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:stateful_inheritance/src/functionality_boxes/loading.dart';
 import 'package:stateful_inheritance/src/util/observation_helper.dart';
+
+part './widgets.dart';
+part './mixins.dart';
 
 //chose to extend inheritedwidget instead of proxy widget, because flutter does not allow
 //me to easily create a custom dependency system, i also want my statefulinheritedwidget to be
@@ -50,6 +54,9 @@ abstract class InheritedState<T extends StatefulInheritedWidget> {
 
   StatefulInheritedElement? _element;
 
+  LoadingBox? _loadingBox;
+  ErrorBox? _errorBox;
+
   @protected
   @mustCallSuper
   void initState() {}
@@ -65,8 +72,11 @@ abstract class InheritedState<T extends StatefulInheritedWidget> {
   ///Optionally affected keys can be given to make only those widgets rebuild,
   ///if no keys are given all widgets are rebuilt regardless of their key.
   @protected
-  void setState({List<String>? affects}) {
-    _element!.markObserversForBuild(affects ?? List.empty());
+  void setState({List<String>? affects, List<String>? excludes}) {
+    _element!.markObserversForBuild(
+      affects: affects ?? List.empty(),
+      excludes: excludes ?? List.empty(),
+    );
   }
 }
 

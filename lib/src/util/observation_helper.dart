@@ -24,20 +24,27 @@ mixin ObservationHelper {
   final _elements = HashSet<Element>.identity();
   final _observers = HashMap<Element, Observer>();
 
-  void markObserversForBuild(List<String> keys) {
+  void markObserversForBuild({
+    required List<String> affects,
+    required List<String> excludes,
+  }) {
     //Maybe there is a more efficient way to instantly remove observers
     //without running logic every frame
     _elements.removeWhere((e) => !e.mounted);
     if (_isBuildPhase) {
       SchedulerBinding.instance.addPostFrameCallback(
-        (_) => markObserversForBuild(keys),
+        (_) => markObserversForBuild(affects: affects, excludes: excludes),
       );
       return;
     }
     for (final element in _elements) {
       final observer = _observers[element]!;
-      if (keys.isEmpty || observer.hasKey && keys.contains(observer.key)) {
-        element.markNeedsBuild();
+      if (affects.isEmpty ||
+          observer.hasKey && affects.contains(observer.key)) {
+        if (excludes.isEmpty ||
+            (observer.hasKey && !excludes.contains(observer.key))) {
+          element.markNeedsBuild();
+        }
       }
     }
   }
