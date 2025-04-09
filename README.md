@@ -99,6 +99,7 @@ class CounterState extends InheritedState<CounterProvider> {
 ```
 
 This is all we need to create our counter app.
+💡Tip: you can create a VScode snippet for the widget, like the snippet for the stateful widget.
 
 ```dart
 class MyApp extends StatelessWidget {
