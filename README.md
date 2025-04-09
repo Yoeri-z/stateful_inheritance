@@ -16,7 +16,7 @@ Stateful inheritance, yet another state management solution that attempts to sta
 ## Features
 
  - :racing_car: Fast
- - :bulb: familiar if you are used to the flutter inherited, widget
+ - :bulb: familiar if you are used to flutters `InheritedWidget`
  - :fire: Hot reload compatible
  - :hammer_and_wrench: Dev tool compatible
  - :control_knobs: Extreme finegrained control over rebuilds if wanted
