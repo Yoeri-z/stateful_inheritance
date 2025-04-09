@@ -36,12 +36,13 @@ so I created a list of prerequisisites:
  - [Inherited widget](https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html)
  - [Build context](https://api.flutter.dev/flutter/widgets/BuildContext-class.html)
  - [State management](https://docs.flutter.dev/get-started/fundamentals/state-management)
+
 Make sure you are comfortable with, and understand these topics.
 
 ## Core concepts
-This package attempts to extend on flutters principle of inheritence by adding a new widget called `StatefullInheritedWidget`. Which in essence an inheritedwidget with a piece of state attached to it. Kind of like what `StatefulWidget` is to `StatelessWidget`. A widget that has a state attached to it.
+This package attempts to extend on flutters principle of inheritence by adding a new widget called `StatefulInheritedWidget`. Which in essence an `InheritedWidget` with a piece of state attached to it. Kind of like what `StatefulWidget` is to `StatelessWidget`.
 
-Lets create a `StatefullInheritedWidget` for keeping track of the count of a simple integer.
+Lets create a `StatefulInheritedWidget` for keeping track of the count of a simple integer.
 ```dart
 class CounterProvider extends StatefulInheritedWidget {
   const CounterProvider({super.key, required super.child});
@@ -55,7 +56,7 @@ class CounterState extends InheritedState<CounterProvider> {
 
   void increment() {
     count++;
-    setState(affects: [countKey]);
+    setState();
   }
 }
 ```
@@ -128,10 +129,10 @@ class CounterPage extends StatelessWidget {
   }
 }
 ```
-As you can see the Widget tree is very concise because the StatefulInheritedWidget does the heavy lifting. Usually it is good practice to put your StatefulInheritedWidget in a seperate file next to the other widgets like is done in the [flutter compass app example](https://github.com/flutter/samples/tree/main/compass_app)
+As you can see the Widget tree is very concise because the `StatefulInheritedWidget` does the heavy lifting. Usually it is good practice to put your StatefulInheritedWidget in a seperate file next to the other widgets like is done in the [flutter compass app example](https://github.com/flutter/samples/tree/main/compass_app)
 
 ### properties of InheritedState
-Just like a `StatefulWidgets` `State`, the `InheritedState` has a few overridable methods to manage its contents over its lifecycle.
+Just like a `State`, the `InheritedState` has a few overridable methods to manage its contents over its lifecycle.
 ```dart
 class CounterState extends InheritedState<CounterProvider> {
   //called when the state is attached to the widget tree
@@ -154,9 +155,7 @@ class CounterState extends InheritedState<CounterProvider> {
 These methods do look like they are inviting mutable objects into the state, but this should be avoided. There are very few cases where having mutable state is more convenient but for the few cases that it is, this package makes handling them easy.
 
 ### keys
-Keys are something that come in handy when you want to optimize your app. They are a way to control exactly what widget rebuilds with which state change. 
-
-Usually to do this with immutable state, you will compare the oldstate with the newstate to see if the change is relevant to the widget. This is not the best way to go about things with mutable state. Keys are a way to control what widget is rebuilt straight from the `setState` method.
+Keys come in handy when you want to optimize your app. They are a way to control exactly what widget rebuilds with which state change.
 
 It is probably easier to understand if you just see it in action.
 
@@ -227,8 +226,9 @@ class Counter2 extends StatelessWidget {
 ```
 
 ## Mixins(To be implemented)
-InheritedState can be given a lot of default utility with a couple of utility mixins this package provides for it:
- - AsyncMixin, a mixin for handling async operations. With default operations for loading and error handling
+`InheritedState` can be given a lot of default utility with a couple of utility mixins this package provides for it:
+ - AsyncMixin, a mixin for handling async operations. With default operations for loading and error handling.
+   Comes with the AsyncConsumer widget to implement it in the ui
  - PersistenceMixin, persist an InheritedStates data (or part of it) over multiple sessions
  - SideEffectMixin, a mixin for creating ui side effect at the level of the StatefulInheritedWidget. Usefull for things like pop-up dialogs and snackbars
  - MultiErrorProducerMixin, a mixin for states that are error prone and can function eventhough errors occur. This mixin provides functionality to store all the errors that occured in the states lifetime
@@ -241,6 +241,3 @@ it is recommended to have all the fields in your state be immutable objects. (Ju
 - Dont observe from context directly in the widget, write static methods on your `StatefulInheritedWidget` instead. (As seen in [The core concepts](#core-concepts))
 - Usually it is good practice to put your StatefulInheritedWidget in a seperate file next to the other widgets like is done in the [flutter compass app example](https://github.com/flutter/samples/tree/main/compass_app)
 
-
-## Discussion points
-Include context in the inherited state?
