@@ -12,6 +12,8 @@ and the Flutter guide for
 -->
 
 Stateful inheritance is a state management solution that attempts to stay inline with the 'flutter' way of doing things (whatever that means).
+Note: This package is more of an experiment than something that should be actually used in an application, it is probably wise to choose a more popular
+solution for your projects.
 
 ## Features
 
